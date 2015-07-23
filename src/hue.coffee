@@ -107,7 +107,7 @@ class Hue
       return callback error if error?
       state = _.findWhere(_.values(body), name: sensorName).state
       debug 'got state', state
-      callback button: BUTTON_EVENTS[state.buttonevent], state: state
+      callback null, button: BUTTON_EVENTS[state.buttonevent], state: state
 
   checkSensors: (callback=->) =>
     @verify (error) =>
