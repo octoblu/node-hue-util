@@ -1,7 +1,7 @@
 {
   "name": "hue-util",
   "version": "1.0.1",
-  "description": "Node module for controlling Phillips Hue lights",
+  "description": "Node module for controlling Philips Hue lights",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
