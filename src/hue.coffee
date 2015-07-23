@@ -114,7 +114,7 @@ class Hue
       return callback error if error?
       requestOptions =
         method: 'GET'
-        uri: @getUrl "/api/#{@username}/sensors"
+        uri: @getUri "/api/#{@username}/sensors"
         json: true
       debug 'retrieving sensors', requestOptions
       request requestOptions, @handleResponse(callback)
