@@ -1,6 +1,6 @@
 {
   "name": "hue-util",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Node module for controlling Philips Hue lights",
   "main": "index.js",
   "scripts": {
