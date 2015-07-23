@@ -1,0 +1,32 @@
+{
+  "name": "node-hue-util",
+  "version": "1.0.0",
+  "description": "Node module for controlling Phillips Hue lights",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octoblu/node-hue-util.git"
+  },
+  "keywords": [
+    "Phillips",
+    "Hue",
+    "Lights",
+    "Octoblu"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/octoblu/node-hue-util/issues"
+  },
+  "homepage": "https://github.com/octoblu/node-hue-util#readme",
+  "dependencies": {
+    "coffee-script": "^1.9.3",
+    "debug": "^2.2.0",
+    "lodash": "^3.10.0",
+    "request": "^2.60.0",
+    "tinycolor2": "^1.1.2"
+  }
+}
