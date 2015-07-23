@@ -1,5 +1,5 @@
 {
-  "name": "node-hue-util",
+  "name": "hue-util",
   "version": "1.0.0",
   "description": "Node module for controlling Phillips Hue lights",
   "main": "index.js",
