@@ -64,14 +64,16 @@ class Hue
     request requestOptions, @handleResponse(callback)
 
   createUser: (callback=->) =>
+    return callback null if @username
     requestOptions =
       method: 'POST'
       uri: @getUri "/api"
       json: devicetype: @app
     debug 'creating user', requestOptions
     request requestOptions, @handleResponse (error, body) =>
-      @username = body?[0]?.success?.username
-      @onUsernameChange @username
+      if body?[0]?.success?.username
+        @username = body[0].success.username
+        @onUsernameChange @username
       callback error, body
 
   changeLights: (options={}, callback=->) =>
