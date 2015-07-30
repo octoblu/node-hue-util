@@ -19,8 +19,9 @@ class Hue
 
   handleResponse: (callback=->) =>
     (error, response, body) =>
-      debug 'got response', error, response.statusCode, body
+      debug 'got response', error, response?.statusCode, body
       return callback error if error?
+      return callback error: "invalid response" unless response?
       return callback body if response.statusCode > 400
       if body?[0]?.error?
         debug 'got hue error', body[0].error
@@ -31,17 +32,24 @@ class Hue
     debug 'verifying'
     @getBridgeIp (error, ipAddress) =>
       return callback error if error?
+      return callback error: "no bridge" unless ipAddress?
       @checkHueBridge (error) =>
+        return callback error if error?.error == 'invalid response'
         return @createUser callback if error?
         callback()
 
-  getBridgeIps: (callback=->) =>
+  getRawBridges: (callback=->) =>
     requestOptions =
       method: 'GET'
       uri: 'https://www.meethue.com/api/nupnp'
       json: true
     debug 'getting bridge ips', requestOptions
     request requestOptions, @handleResponse (error, body) =>
+      return callback error if error?
+      callback null, body
+
+  getBridgeIps: (callback=->) =>
+    @getRawBridges (error, body)=>
       return callback error if error?
       callback null, _.pluck body, 'internalipaddress'
 
@@ -75,6 +83,14 @@ class Hue
         @username = body[0].success.username
         @onUsernameChange @username
       callback error, body
+
+  getLights: (callback=->) =>
+    @verify (error) =>
+      return callback error if error?
+      requestOptions =
+        method: 'GET'
+        uri: @getUri "/api/#{@username}/lights"
+      request requestOptions, @handleResponse callback
 
   changeLights: (options={}, callback=->) =>
     @verify (error) =>
