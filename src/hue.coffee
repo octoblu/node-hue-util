@@ -36,6 +36,8 @@ class Hue
       @checkHueBridge (error) =>
         return callback error if error?.error == 'invalid response'
         return @createUser callback if error?
+        @username = @app
+        @onUsernameChange @username
         callback()
 
   getRawBridges: (callback=->) =>
@@ -121,7 +123,8 @@ class Hue
     debug 'checking buttons'
     @checkSensors (error, body) =>
       return callback error if error?
-      state = _.findWhere(_.values(body), name: sensorName).state
+      state = _.findWhere(_.values(body), name: sensorName)?.state
+      return callback(sensorName + ' not found') if not state?
       debug 'got state', state
       callback null, button: BUTTON_EVENTS[state.buttonevent], state: state
 
