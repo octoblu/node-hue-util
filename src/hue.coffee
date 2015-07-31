@@ -36,6 +36,8 @@ class Hue
       @checkHueBridge (error) =>
         return callback error if error?.error == 'invalid response'
         return @createUser callback if error?
+        @username = @app
+        @onUsernameChange @username
         callback()
 
   getRawBridges: (callback=->) =>
