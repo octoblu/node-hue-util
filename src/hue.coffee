@@ -92,6 +92,7 @@ class Hue
       requestOptions =
         method: 'GET'
         uri: @getUri "/api/#{@username}/lights"
+        json: true
       request requestOptions, @handleResponse callback
 
   changeLights: (options={}, callback=->) =>
