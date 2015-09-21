@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '0.10'
+before_install:
+  - npm install npm -g
+deploy:
+  - provider: npm
+    skip_cleanup: true
+    clean_up: false
+    email: serveradmin@octoblu.com
+    api_key:
+      secure: "k1epRh+pz2/Z9L+XddeXb0zzv4o7yxBaiXdCkEzjuTBajg3mbffR9mr50LPGJ4yZGT+xSFS4RFbf91Vn9/hrS0Jcu1DRkFXTw85iaROgWVHvp2cpJX0F0uTqGAZ/DDNKpGyd+bAxwtFWW0rq0oyRtjxUg8WcNFx7WCXiYT26n6bOBpZqbqle48aHX21GJwbURnqC1+ggK8jqU9cWPtKKqtoiKIkZS+q/TzLHu8RkHy6905a57fwE4SDgv9IYnBR0kEP4GUyW1k8rFl+6swwn0wSS9SHS8LN43Nlo+NUUDpUYrQmdifWV95EYHUjFoUGptR1PjSHoCc52R1dLywCSFRkd6Kt/r8iWVMtEQVX/5y1OB1iwTp4VR/EQ1M4GtbIL56WvvV74GKUtJLKKG5WXuzM3KnGLu6GWrvVBvdA359tkMsQpYvSdmmbGRlZ9xxL1EnzmXTBpMJxPCTg9aGXZRnCn3MfSmanMc9yUBWrgDnuTwg2mU94yX+jsczUdnZ2EtAzrrzQJOuYsRkbrj1dD/0e9RV1BkVRHU25p4yk8R8GRCKIk0984mYf3YIycOYD9ovfO+AC6qnJpQR6dyDyoo0ZP/avxdFeiinHNyB6LcMU4thA5vSyAgT+Kc7IBDJARvalvA6QAOaQ1VT6pF8Qe/o/VgK5hc3+6GJzcHkx0oF4="
+    on:
+      tags: true
+      all_branches: true
