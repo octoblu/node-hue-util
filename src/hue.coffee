@@ -10,6 +10,7 @@ BUTTON_EVENTS       = 16: '2', 17: '3', 18: '4', 34: '1'
 
 class Hue
   constructor: (@app='hue-util', @ipAddress, @username, @onUsernameChange=->) ->
+    @ipAddress = undefined if _.isEmpty @ipAddress
 
   getUri: (path) =>
     url.format
