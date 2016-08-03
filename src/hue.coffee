@@ -54,7 +54,7 @@ class Hue
   getBridgeIps: (callback=->) =>
     @getRawBridges (error, body)=>
       return callback error if error?
-      callback null, _.pluck body, 'internalipaddress'
+      callback null, _.map body, 'internalipaddress'
 
   getBridgeIp: (callback=->)=>
     debug 'getting bridge ip', defaultIpAddress: @ipAddress
@@ -62,7 +62,7 @@ class Hue
     @getBridgeIps (error, ips) =>
       return callback error if error?
       debug 'got ip addresses', ips
-      @ipAddress = _.first ips
+      @ipAddress = _.head ips
       debug 'using ipAddress', @ipAddress
       callback null, @ipAddress
 
@@ -112,7 +112,7 @@ class Hue
         bri: parseInt(hsv.v * HUE_SAT_MODIFIER)
         hue: parseInt(hsv.h * HUE_DEGREE_MODIFIER)
         sat: parseInt(hsv.s * HUE_SAT_MODIFIER)
-      body = _.extend colorDefaults, body if options.color
+      body = _.defaults body, colorDefaults if options.color
 
       requestOptions =
         method: 'PUT'
@@ -125,7 +125,7 @@ class Hue
     debug 'checking buttons'
     @checkSensors (error, body) =>
       return callback error if error?
-      state = _.findWhere(_.values(body), name: sensorName)?.state
+      state = _.find(_.values(body), name: sensorName)?.state
       return callback(sensorName + ' not found') if not state?
       debug 'got state', state
       callback null, button: BUTTON_EVENTS[state.buttonevent], state: state
