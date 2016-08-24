@@ -96,6 +96,15 @@ class Hue
         json: true
       request requestOptions, @handleResponse callback
 
+  getGroups: (callback=->) =>
+    @verify (error) =>
+      return callback error if error?
+      requestOptions =
+        method: 'GET'
+        uri: @getUri "/api/#{@username}/groups"
+        json: true
+      request requestOptions, @handleResponse callback
+
   changeLights: (options={}, callback=->) =>
     @verify (error) =>
       return callback error if error?
