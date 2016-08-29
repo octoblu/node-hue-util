@@ -132,7 +132,11 @@ class Hue
       endpoint = 'groups' if options.useGroup
       action = 'action' if options.useGroup
 
-      hsv = tinycolor(options.color).toHsv()
+      if options.color == 'random'
+        hsv = tinycolor.random().toHsv()
+      else
+        hsv = tinycolor(options.color).toHsv()
+
       body = _.pick options, ['on', 'alert', 'effect', 'transitiontime']
 
       colorDefaults =
