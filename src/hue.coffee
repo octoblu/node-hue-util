@@ -87,12 +87,30 @@ class Hue
         @onUsernameChange @username
       callback error, body
 
+  getLight: (id, callback=->) =>
+    @verify (error) =>
+      return callback error if error?
+      requestOptions =
+        method: 'GET'
+        uri: @getUri "/api/#{@username}/lights/#{id}"
+        json: true
+      request requestOptions, @handleResponse callback
+
   getLights: (callback=->) =>
     @verify (error) =>
       return callback error if error?
       requestOptions =
         method: 'GET'
         uri: @getUri "/api/#{@username}/lights"
+        json: true
+      request requestOptions, @handleResponse callback
+
+  getGroup: (id, callback=->) =>
+    @verify (error) =>
+      return callback error if error?
+      requestOptions =
+        method: 'GET'
+        uri: @getUri "/api/#{@username}/groups/#{id}"
         json: true
       request requestOptions, @handleResponse callback
 
