@@ -152,6 +152,30 @@ class Hue
       debug 'changing lights', requestOptions
       request requestOptions, @handleResponse(callback)
 
+  changeGroup: (groupNumber, options, callback) =>
+    @verify (error) =>
+      return callback error if error?
+
+      if options.color == 'random'
+        hsv = tinycolor.random().toHsv()
+      else
+        hsv = tinycolor(options.color).toHsv()
+
+      body = _.pick options, ['on', 'alert', 'effect', 'transitiontime']
+
+      colorDefaults =
+        bri: parseInt(hsv.v * HUE_SAT_MODIFIER)
+        hue: parseInt(hsv.h * HUE_DEGREE_MODIFIER)
+        sat: parseInt(hsv.s * HUE_SAT_MODIFIER)
+      body = _.defaults body, colorDefaults if options.color
+
+      requestOptions =
+        method: 'PUT'
+        uri: @getUri "/api/#{@username}/groups/#{groupNumber}/action"
+        json: body
+      debug 'changing group', requestOptions
+      request requestOptions, @handleResponse(callback)
+
   checkButtons: (sensorName, callback=->) =>
     debug 'checking buttons'
     @checkSensors (error, body) =>
