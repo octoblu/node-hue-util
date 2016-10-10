@@ -185,6 +185,21 @@ class Hue
       debug 'got state', state
       callback null, button: BUTTON_EVENTS[state.buttonevent], state: state
 
+  checkMotion: (callback=->) =>
+    debug 'checking motion'
+    @checkSensors (error, body) =>
+      return callback error if error?
+      motionSensors = _.filter body, { modelid: 'SML001'}
+      presence = _.filter motionSensors, { type: 'ZLLPresence' }
+      light = _.filter motionSensors, { type: 'ZLLLightLevel' }
+      temp = _.filter motionSensors, { type: 'ZLLTemperature' }
+      response = {
+        presence: @_filterSensorArray presence
+        light_level: @_filterSensorArray light
+        temperature: @_filterSensorArray temp
+      }
+      callback null, response
+
   checkSensors: (callback=->) =>
     @verify (error) =>
       return callback error if error?
@@ -194,5 +209,11 @@ class Hue
         json: true
       debug 'retrieving sensors', requestOptions
       request requestOptions, @handleResponse(callback)
+
+  _filterSensorArray: (sensors) =>
+    filtered = {}
+    _.forEach sensors, (sensor) =>
+      filtered[sensor.name] = sensor.state
+    return filtered
 
 module.exports = Hue
