@@ -125,6 +125,14 @@ class Hue
         json: true
       request requestOptions, @handleResponse callback
 
+  toTinycolor: ({bri, sat, hue}) =>
+    bri = parseInt(bri / HUE_SAT_MODIFIER)
+    hue = parseInt(hue / HUE_DEGREE_MODIFIER)
+    sat = parseInt(sat / HUE_SAT_MODIFIER)
+
+    color = "hsv(#{hue},#{sat},#{bri})"
+    tinycolor color
+
   changeLights: (options={}, callback=->) =>
     @verify (error) =>
       return callback error if error?
