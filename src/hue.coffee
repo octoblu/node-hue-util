@@ -9,8 +9,10 @@ HUE_DEGREE_MODIFIER = 182.04
 BUTTON_EVENTS       = 16: '2', 17: '3', 18: '4', 34: '1'
 
 class Hue
-  constructor: (@app='hue-util', @ipAddress, @username, @onUsernameChange=->) ->
+  constructor: (@app, @ipAddress, @username, @onUsernameChange=->) ->
+    @app = 'hue-util' if _.isEmpty @app
     @ipAddress = undefined if _.isEmpty @ipAddress
+    @username = undefined if _.isEmpty @username
 
   getUri: (path) =>
     url.format
