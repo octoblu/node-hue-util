@@ -9,10 +9,11 @@ HUE_DEGREE_MODIFIER = 182.04
 BUTTON_EVENTS       = 16: '2', 17: '3', 18: '4', 34: '1'
 
 class Hue
-  constructor: (@app, @ipAddress, @username, @onUsernameChange=->) ->
+  constructor: (@app, @ipAddress, @username, @onUsernameChange=_.noop, @timeout) ->
     @app = 'hue-util' if _.isEmpty @app
     @ipAddress = undefined if _.isEmpty @ipAddress
     @username = undefined if _.isEmpty @username
+    @timeout = 10000 if _.isEmpty @timeout
 
   getUri: (path) =>
     url.format
@@ -37,8 +38,12 @@ class Hue
       return callback error if error?
       return callback error: "no bridge" unless ipAddress?
       @checkHueBridge (error) =>
-        return callback error if error?.error == 'invalid response'
-        return @createUser callback if error?
+        if error?
+          return callback error if error.error == 'invalid response'
+          return @createUser (createUserError) =>
+            return callback createUserError if createUserError?
+            callback error
+
         @username = @app
         @onUsernameChange @username
         callback()
@@ -48,6 +53,7 @@ class Hue
       method: 'GET'
       uri: 'https://www.meethue.com/api/nupnp'
       json: true
+      timeout: @timeout
     debug 'getting bridge ips', requestOptions
     request requestOptions, @handleResponse (error, body) =>
       return callback error if error?
@@ -73,6 +79,7 @@ class Hue
       method: 'GET'
       uri: @getUri "/api/#{@app}"
       json: true
+      timeout: @timeout
     debug 'check hue bridge', requestOptions
     request requestOptions, @handleResponse(callback)
 
@@ -82,6 +89,7 @@ class Hue
       method: 'POST'
       uri: @getUri "/api"
       json: devicetype: @app
+      timeout: @timeout
     debug 'creating user', requestOptions
     request requestOptions, @handleResponse (error, body) =>
       if body?[0]?.success?.username
@@ -96,6 +104,7 @@ class Hue
         method: 'GET'
         uri: @getUri "/api/#{@username}/lights/#{id}"
         json: true
+        timeout: @timeout
       request requestOptions, @handleResponse callback
 
   getLights: (callback=->) =>
@@ -105,6 +114,7 @@ class Hue
         method: 'GET'
         uri: @getUri "/api/#{@username}/lights"
         json: true
+        timeout: @timeout
       request requestOptions, @handleResponse callback
 
   getGroup: (id, callback=->) =>
@@ -114,6 +124,7 @@ class Hue
         method: 'GET'
         uri: @getUri "/api/#{@username}/groups/#{id}"
         json: true
+        timeout: @timeout
       request requestOptions, @handleResponse callback
 
   getGroups: (callback=->) =>
@@ -123,6 +134,7 @@ class Hue
         method: 'GET'
         uri: @getUri "/api/#{@username}/groups"
         json: true
+        timeout: @timeout
       request requestOptions, @handleResponse callback
 
   toTinycolor: ({bri, sat, hue}) =>
@@ -217,6 +229,7 @@ class Hue
         method: 'GET'
         uri: @getUri "/api/#{@username}/sensors"
         json: true
+        timeout: @timeout
       debug 'retrieving sensors', requestOptions
       request requestOptions, @handleResponse(callback)
 
