@@ -159,7 +159,7 @@ class Hue
       else
         hsv = tinycolor(options.color).toHsv()
 
-      body = _.pick options, ['on', 'alert', 'effect', 'transitiontime']
+      body = _.pick options, ['on', 'alert', 'effect', 'transitiontime','bri']
 
       colorDefaults =
         bri: parseInt(hsv.v * HUE_SAT_MODIFIER)
@@ -183,7 +183,7 @@ class Hue
       else
         hsv = tinycolor(options.color).toHsv()
 
-      body = _.pick options, ['on', 'alert', 'effect', 'transitiontime']
+      body = _.pick options, ['on', 'alert', 'effect', 'transitiontime','bri']
 
       colorDefaults =
         bri: parseInt(hsv.v * HUE_SAT_MODIFIER)
