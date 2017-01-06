@@ -138,12 +138,11 @@ class Hue
       request requestOptions, @handleResponse callback
 
   toTinycolor: ({bri, sat, hue}) =>
-    bri = parseInt(bri / HUE_SAT_MODIFIER)
-    hue = parseInt(hue / HUE_DEGREE_MODIFIER)
-    sat = parseInt(sat / HUE_SAT_MODIFIER)
+    v = bri / HUE_SAT_MODIFIER
+    h = hue / HUE_DEGREE_MODIFIER
+    s = sat / HUE_SAT_MODIFIER
 
-    color = "hsv(#{hue},#{sat},#{bri})"
-    tinycolor color
+    tinycolor { h, s, v }
 
   changeLights: (options={}, callback=->) =>
     @verify (error) =>
