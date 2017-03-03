@@ -44,7 +44,6 @@ class Hue
             return callback createUserError if createUserError?
             callback error
 
-        @username = @app
         @onUsernameChange @username
         callback()
 
@@ -77,7 +76,7 @@ class Hue
   checkHueBridge: (callback=->) =>
     requestOptions =
       method: 'GET'
-      uri: @getUri "/api/#{@app}"
+      uri: @getUri "/api/#{@username}"
       json: true
       timeout: @timeout
     debug 'check hue bridge', requestOptions
